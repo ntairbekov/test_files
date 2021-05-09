@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+	<script src="test.js"></script>
+	
+	<form>
+	<table><tr><td>
+			Set A contents: <span id="setLabelA"></span></br>
+			<input type="text" id="valA">
+			<input type="button" value="Add element" onClick="javascript:addElement('valA')">
+			<input type="button" value="Remove element" onClick="javascript:removeElement('valA')">
+			<input type="button" value="Contains element" onClick="javascript:containsElement('valA')">
+			<input type="button" value="Show size" onClick="javascript:showSize('valA')"></br>
+			<input type="button" value="A &cup; B" onClick="javascript:setUnion('A', 'B')">
+			<input type="button" value="A &cap; B" onClick="javascript:setIntersect('A', 'B')">
+			<input type="button" value="A &minus; B" onClick="javascript:setDiff('A', 'B')">
+			<input type="button" value="A = B" onClick="javascript:setEquals('A', 'B')">
+			<input type="button" value="A &sube; B" onClick="javascript:subSet('A', 'B')">
+			<input type="button" value="A &supe; B" onClick="javascript:superSet('A', 'B')">
+	</td><td>
+			Set B contents: <span id="setLabelB"></span></br>
+			<input type="text" id="valB">
+			<input type="button" value="Add element" onClick="javascript:addElement('valB')">
+			<input type="button" value="Remove element" onClick="javascript:removeElement('valB')">
+			<input type="button" value="Contains element" onClick="javascript:containsElement('valB')">
+			<input type="button" value="Show size" onClick="javascript:showSize('valB')"></br>
+			<input type="button" value="B &cup; A" onClick="javascript:setUnion('B', 'A')">
+			<input type="button" value="B &cap; A" onClick="javascript:setIntersect('B', 'A')">
+			<input type="button" value="B &minus; A" onClick="javascript:setDiff('B', 'A')">
+			<input type="button" value="B = A" onClick="javascript:setEquals('B', 'A')">
+			<input type="button" value="B &sube; A" onClick="javascript:subSet('B', 'A')">
+			<input type="button" value="B &supe; A" onClick="javascript:superSet('B', 'A')">
+	</td></tr></table>
+	</form>
+	<script>
+		var setA = new mySet();
+		var setB = new mySet();
+		document.getElementById("setLabelA").innerHTML = setA.toString();
+		document.getElementById("setLabelB").innerHTML = setB.toString();	
+		
+		function addElement(label) {
+			if (label.endsWith('A')) {
+				setA.add(document.getElementById(label).value);
+				updateLog("A", "add", document.getElementById(label).value, setA.toString());
+			} else {
+				setB.add(document.getElementById(label).value);
+				updateLog("B", "add", document.getElementById(label).value, setB.toString());
+			}
+			document.getElementById(label).value = "";
+		}
+		function removeElement(label) {
+			if (label.endsWith('A')) {
+				setA.remove(document.getElementById(label).value);
+				updateLog("A", "remove", document.getElementById(label).value, setA.toString());
+			} else {
+				setB.remove(document.getElementById(label).value);
+				updateLog("B", "remove", document.getElementById(label).value, setB.toString());
+			}
+			document.getElementById(label).value = "";
+		}
+		function containsElement(label) {
+			if (label.endsWith('A')) {
+				updateLog("A", "contains", document.getElementById(label).value, setA.contains(document.getElementById(label).value));
+			} else {
+				updateLog("B", "contains", document.getElementById(label).value, setB.contains(document.getElementById(label).value));
+			}
+			document.getElementById(label).value = "";
+		}
+		function showSize(label) {
+			if (label.endsWith('A')) {
+				updateLog("A", "size", "", setA.size());
+			} else {
+				updateLog("B", "size", "", setB.size());
+			}
+		}
+		function updateLog(setLabel, action, value, setContent) {
+			document.getElementById("log").innerHTML += setLabel + "." + action + "(" 
+				+ value + ") = " + setContent + "</br>";
+			if (setLabel == 'A')
+				document.getElementById("setLabelA").innerHTML = setA.toString();
+			else
+				document.getElementById("setLabelB").innerHTML = setB.toString();				
+		}
+		function setUnion(first, second) { 
+			updateLog("A", "union", "B", setA.union(setB));
+		}
+		function setIntersect(first, second) { 
+			updateLog("A", "intersection", "B", setA.intersection(setB));
+		}
+		function setDiff(first, second) { 
+			if (first == 'A') {
+				updateLog("A", "difference", "B", setA.difference(setB));
+			} else {
+				updateLog("B", "difference", "A", setB.difference(setA));
+			}
+		}
+		function setEquals(first, second) { 
+			updateLog("A", "equals", "B", setA.equals(setB));
+		}
+		function subSet(first, second) { 
+			if (first == 'A') {
+				updateLog("A", "isSubset", "B", setA.isSubset(setB));
+			} else {
+				updateLog("B", "isSubset", "A", setB.isSubset(setA));
+			}
+		}
+		function superSet(first, second) { 
+			if (first == 'A') {
+				updateLog("A", "isSuperset", "B", setA.isSuperset(setB));
+			} else {
+				updateLog("B", "isSuperset", "A", setB.isSuperset(setA));
+			}
+		}
+	</script>
+	<span name="log" id="log" font="sans-serifs"></span>
+</body>
+</html>
